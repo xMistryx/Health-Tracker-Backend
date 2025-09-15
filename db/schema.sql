@@ -29,6 +29,8 @@ CREATE TABLE sleep_logs(
     user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     date date NOT NULL,
     sleep_type text NOT NULL CHECK (sleep_type IN ('Sleep','Nap')),
+    start_time timestamp NOT NULL,
+    end_time timestamp NOT NULL,
     duration integer NOT NULL
 );
 
@@ -37,14 +39,18 @@ CREATE TABLE food_logs(
     user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     date date NOT NULL,
     food_item text NOT NULL,
-    calories integer NOT NULL
+    calories integer,
+    protein integer,
+    carbs integer,
+    fiber integer,
+    fat integer
 );
 
 CREATE TABLE exercise_logs(
     id serial PRIMARY KEY,
     user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     date date NOT NULL,
-    exercise_type text NOT NULL CHECK (exercise_type IN ('Cardio','Strength Training','Flexibility Training','Balance Training')),
+    exercise_type text NOT NULL CHECK (exercise_type IN ('Stretching', 'Cardio','Strength Training','Flexibility Training','Balance Training')),
     duration integer NOT NULL
 );
 
@@ -71,5 +77,7 @@ CREATE TABLE affirmations(
 
 CREATE TABLE encouragements(
     id serial PRIMARY KEY,
-    encouragement text NOT NULL
+    category text NOT NULL CHECK (category IN ('Water','Exercise','Food','Sleep')),
+    milestone text NOT NULL,
+    message text NOT NULL
 );  
