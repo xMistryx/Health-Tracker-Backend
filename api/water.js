@@ -63,4 +63,3 @@ router.get("/recommendation", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
-console.log("Error generating water recommendation:", error);

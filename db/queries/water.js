@@ -25,4 +25,3 @@ export async function deleteWaterEntry(id) {
     const { rows: [water] } = await db.query(sql, [id]);
     return water;
 }
-console.log("Error generating water recommendation.:", error);
