@@ -72,7 +72,7 @@ CREATE TABLE health_tips(
 
 CREATE TABLE affirmations(
     id serial PRIMARY KEY,
-    affirmation text NOT NULL
+    message text NOT NULL
 );
 
 CREATE TABLE encouragements(

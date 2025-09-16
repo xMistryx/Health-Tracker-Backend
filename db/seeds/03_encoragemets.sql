@@ -1,6 +1,3 @@
-TRUNCATE health_tips
-RESTART IDENTITY CASCADE;
-
 INSERT INTO encouragements (category, milestone, message) VALUES
 -- Water
 ('Water', 'FirstLog', 'Nice start! Every sip counts'),

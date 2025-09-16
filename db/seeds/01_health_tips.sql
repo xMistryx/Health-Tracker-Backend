@@ -1,6 +1,3 @@
-TRUNCATE health_tips
-RESTART IDENTITY CASCADE;
-
 INSERT INTO health_tips (category, tip) VALUES
 -- Water
 ('Water', 'Keep a water bottle nearby throughout the day to remind yourself to sip.'),

@@ -1,4 +1,4 @@
-import db from "./client.js";
+import db from "../client.js";
 import bcrypt from "bcryptjs";
 
 // Create a new user
