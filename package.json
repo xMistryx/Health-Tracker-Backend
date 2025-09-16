@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/xMistryx/Health-Tracker-Backend/issues"
   },
-  "homepage": "https://github.com/xMistryx/Health-Tracker-Backend#readme"
+  "homepage": "https://github.com/xMistryx/Health-Tracker-Backend#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
