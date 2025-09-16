@@ -1,6 +1,5 @@
 import db from "#db/client";
 
-
 export async function getSleepEntries(userId) {
     const sql = `
         SELECT id, user_id, date, sleep_type, start_time, end_time, duration

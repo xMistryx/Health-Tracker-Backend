@@ -63,3 +63,34 @@ router.get("/recommendation", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
+// PUT /water/:id
+router.put("/:id", requireBody(["amount_oz"]), async (req, res) => {
+    const { id } = req.params;
+    const { amount_oz } = req.body;
+    try {
+        const updatedWaterEntry = await updateWaterEntry(id, { amount_oz });
+        if (!updatedWaterEntry) {
+            return res.status(404).json({ error: "Water entry not found" });
+        }
+        res.json(updatedWaterEntry);
+    } catch (error) {
+        console.error("Error updating water entry:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// DELETE /water/:id
+router.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedWaterEntry = await deleteWaterEntry(id);
+        if (!deletedWaterEntry) {
+            return res.status(404).json({ error: "Water entry not found" });
+        }
+        res.json(deletedWaterEntry);
+    } catch (error) {
+        console.error("Error deleting water entry:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});

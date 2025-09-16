@@ -17,6 +17,16 @@ export async function addWaterEntry(userId, date, amount_oz) {
     return water;
 }
 
+export async function updateWaterEntry(id, { amount_oz }) {
+    const sql = `
+    UPDATE water_logs
+    SET amount_oz = $2
+    WHERE id = $1
+    RETURNING *`;
+    const { rows: [water] } = await db.query(sql, [id, amount_oz]);
+    return water;
+}
+
 export async function deleteWaterEntry(id) {
     const sql = `
     DELETE FROM water_logs
