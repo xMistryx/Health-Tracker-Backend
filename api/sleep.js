@@ -16,8 +16,6 @@ router.use(requireUser);
 router
 .route("/")
 // POST /sleep
-// POST /sleep
-// POST /sleep
 .post(requireBody(["date", "sleep_type", "start_time", "end_time", "duration"]), async (req, res) => {
     const { date, sleep_type, start_time, end_time, duration } = req.body;
     try {
@@ -64,6 +62,37 @@ router.get("/recommendation", async (req, res) => {
         });
     } catch (error) {
         console.error("Error fetching sleep recommendation:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// PUT /sleep/:id
+router.put("/:id", requireBody(["sleep_type", "start_time", "end_time", "duration"]), async (req, res) => {
+    const { id } = req.params;
+    const { sleep_type, start_time, end_time, duration } = req.body;
+    try {
+        const updatedSleepEntry = await updateSleepEntry(id, { sleep_type, start_time, end_time, duration });
+        if (!updatedSleepEntry) {
+            return res.status(404).json({ message: "Sleep entry not found." });
+        }
+        res.json(updatedSleepEntry);
+    } catch (error) {
+        console.error("Error updating sleep entry:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// DELETE /sleep/:id
+router.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedSleepEntry = await deleteSleepEntry(id);
+        if (!deletedSleepEntry) {
+            return res.status(404).json({ message: "Sleep entry not found." });
+        }
+        res.json({ message: "Sleep entry deleted successfully." });
+    } catch (error) {
+        console.error("Error deleting sleep entry:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
