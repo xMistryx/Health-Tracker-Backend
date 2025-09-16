@@ -15,16 +15,20 @@ router.use(requireUser);
 
 router
 .route("/")
-.post(requireBody(["date", "sleep_type", "duration"]), async (req, res) => {
-    const { date, sleep_type, duration } = req.body;
+// POST /sleep
+// POST /sleep
+// POST /sleep
+.post(requireBody(["date", "sleep_type", "start_time", "end_time", "duration"]), async (req, res) => {
+    const { date, sleep_type, start_time, end_time, duration } = req.body;
     try {
-        const newSleepEntry = await addSleepEntry(req.user.id, { date, sleep_type, duration });
+        const newSleepEntry = await addSleepEntry(req.user.id, { date, sleep_type, start_time, end_time, duration });
         res.status(201).json(newSleepEntry);
     } catch (error) {
         console.error("Error adding sleep entry:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 })
+// GET /sleep/history
 .get(async (req, res) => {
     try {
         const sleepEntries = await getSleepEntries(req.user.id);
@@ -33,7 +37,7 @@ router
         console.error("Error fetching sleep entries:", error);
         res.status(500).json({ error: "Internal server error" });
     }
-})
+});
 // GET /sleep/recommendation
 router.get("/recommendation", async (req, res) => {
     try {
