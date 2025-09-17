@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+import db from "../db/client.js";
 
 import {
   createHealthInfo,
@@ -15,6 +16,18 @@ import requireUser from "../middleware/requireUser.js";
 // ✅ Middleware order: extract user from token first
 router.use(getUserFromToken);
 router.use(requireUser);
+
+// TEMP: Get all users' health info (for testing only)
+router.get("/all", async (req, res) => {
+  try {
+    const { rows } = await db.query(
+      "SELECT * FROM health_info ORDER BY user_id"
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Get all health info records for logged-in user
 router.get("/", async (req, res) => {

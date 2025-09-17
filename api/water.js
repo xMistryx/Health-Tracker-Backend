@@ -1,96 +1,78 @@
+// api/water.js
 import express from "express";
+import {
+  getWaterEntries,
+  addWaterEntry,
+  updateWaterEntry,
+  deleteWaterEntry,
+} from "../db/queries/water.js";
+
+import getUserFromToken from "../middleware/getUserFromToken.js";
+import requireUser from "../middleware/requireUser.js";
+import requireBody from "../middleware/requireBody.js";
+
 const router = express.Router();
-export default router;
 
-import { getWaterEntries, addWaterEntry } from "#db/queries/water.js";
-import { requireUser } from "#middleware/requireUser";
-import { requireBody } from "#middleware/requireBody";
+// ✅ Middleware order is important
+router.use(getUserFromToken); // sets req.user if token is valid
+router.use(requireUser); // blocks if no valid user
 
-router.use(requireUser);
-
-router
-.route("/")
-// POST /water
-.post(requireBody(["date", "amount_oz"]), async (req, res) => {
-    const { date, amount_oz } = req.body;
-    try {
-        const newWaterEntry = await addWaterEntry(req.user.id, date, amount_oz);
-        res.status(201).json(newWaterEntry);
-    } catch (error) {
-        console.error("Error adding water entry:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-})
-// GET /water/history
-.get(async (req, res) => {
-    try {
-        const waterEntries = await getWaterEntries(req.user.id);
-        res.json(waterEntries);
-    } catch (error) {
-        console.error("Error fetching water entries:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-});
-// GET /water/recommendation
-router.get("/recommendation", async (req, res) => {
-    try {
-        const waterEntries = await getWaterEntries(req.user.id);
-        if (!waterEntries || waterEntries.length === 0) {
-            return res.status(404).json({ message: "No water logs found." });
-        }
-        const lastEntry = waterEntries[0];
-        const totalOunces = parseFloat(lastEntry.total_oz);
-        let recommendation = "";
-        if (totalOunces < 32) {
-            recommendation = "Low: You drank less than 32 oz of water today. Try to increase your intake for better hydration.";
-        } else if (totalOunces >= 32 && totalOunces < 64) {
-            recommendation = "Moderate: You drank between 32-64 oz of water today. Aim for at least 64 oz for optimal hydration.";
-        } else if (totalOunces >= 64 && totalOunces <= 100) {
-            recommendation = "Excellent: You drank between 64-100 oz of water today. Keep up the good hydration habits!";
-        } else if (totalOunces >= 100 && totalOunces <= 150) {
-            recommendation = "Good: You drank more than 100 oz of water today. Great job staying well-hydrated!";
-        } else if (totalOunces >= 150 && totalOunces <= 200) {
-            recommendation = "Warning: You drank more than 150 oz of water today. This is excessive and could be harmful.";
-        } else if (totalOunces > 200) {
-            recommendation = "Critical: drinking excessive amounts of water can overwhelm your kidneys and dilute the sodium content of your blood.";
-        }
-        res.json({
-            lastEntry,
-            recommendation
-        });
-    } catch (error) {
-        console.error("Error generating water recommendation:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+// GET all water entries for logged-in user
+router.get("/", async (req, res) => {
+  try {
+    const entries = await getWaterEntries(req.user.id);
+    res.json(entries);
+  } catch (err) {
+    console.error("Error fetching water entries:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-// PUT /water/:id
+// POST → Add a new water entry
+router.post("/", requireBody(["date", "amount_oz"]), async (req, res) => {
+  const { date, amount_oz } = req.body;
+
+  try {
+    const newEntry = await addWaterEntry(req.user.id, date, amount_oz);
+    res.status(201).json(newEntry);
+  } catch (err) {
+    console.error("Error adding water entry:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// PUT → Update a water entry by ID
 router.put("/:id", requireBody(["amount_oz"]), async (req, res) => {
-    const { id } = req.params;
-    const { amount_oz } = req.body;
-    try {
-        const updatedWaterEntry = await updateWaterEntry(id, { amount_oz });
-        if (!updatedWaterEntry) {
-            return res.status(404).json({ error: "Water entry not found" });
-        }
-        res.json(updatedWaterEntry);
-    } catch (error) {
-        console.error("Error updating water entry:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+  const { id } = req.params;
+  const { amount_oz } = req.body;
+
+  try {
+    const updated = await updateWaterEntry(id, { amount_oz });
+    if (!updated) return res.status(404).json({ error: "Entry not found" });
+    res.json(updated);
+  } catch (err) {
+    console.error("Error updating water entry:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-// DELETE /water/:id
+// DELETE → Remove a water entry by ID
 router.delete("/:id", async (req, res) => {
-    const { id } = req.params;
-    try {
-        const deletedWaterEntry = await deleteWaterEntry(id);
-        if (!deletedWaterEntry) {
-            return res.status(404).json({ error: "Water entry not found" });
-        }
-        res.json(deletedWaterEntry);
-    } catch (error) {
-        console.error("Error deleting water entry:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+  const { id } = req.params;
+
+  try {
+    const deleted = await deleteWaterEntry(id);
+    if (!deleted) return res.status(404).json({ error: "Entry not found" });
+    res.json({ message: "Water entry deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting water entry:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
+
+// Optional: test token route
+router.get("/test-token", requireUser, (req, res) => {
+  res.json({ message: "Token works!", userId: req.user.id });
+});
+
+export default router;

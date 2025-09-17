@@ -1,11 +1,12 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+import "dotenv/config";
+import app from "./app.js";
+import db from "./db/client.js";
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+const PORT = process.env.PORT ?? 3000;
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+await db.connect();
+console.log("✅ Connected to Postgres");
+
+app.listen(PORT, () => {
+  console.log(`🚀 Listening on port ${PORT}...`);
 });
