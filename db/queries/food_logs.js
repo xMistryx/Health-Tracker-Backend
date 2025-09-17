@@ -20,14 +20,14 @@ export async function addFoodLog(userId, { date, food_item, calories, protein, c
     return log;
 }
 
-export async function updateFoodLog(id, { food_item, calories, protein, carbs, fiber, fat }) {
+export async function updateFoodLog(id, { date, food_item, calories, protein, carbs, fiber, fat }) {
     const sql = `
         UPDATE food_logs
-        SET food_item = $2, calories = $3, protein = $4, carbs = $5, fiber = $6, fat = $7
+        SET date = $2, food_item = $3, calories = $4, protein = $5, carbs = $6, fiber = $7, fat = $8
         WHERE id = $1
         RETURNING *
     `;
-    const { rows: [log] } = await db.query(sql, [id, food_item, calories, protein, carbs, fiber, fat]);
+    const { rows: [log] } = await db.query(sql, [id, date, food_item, calories, protein, carbs, fiber, fat]);
     return log;
 }
 

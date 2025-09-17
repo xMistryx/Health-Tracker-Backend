@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "node --watch --env-file=.env server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +19,37 @@
   },
   "homepage": "https://github.com/xMistryx/Health-Tracker-Backend#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "type": "module",
+  "imports": {
+    "#app": "./app.js",
+    "#db/client": "./db/client.js",
+    "#api/affirmations": "./api/affirmations.js",
+    "#api/encouragements": "./api/encouragements.js",
+    "#api/exercise_logs": "./api/exercise_logs.js",
+    "#api/food_logs": "./api/food_logs.js",
+    "#api/health_info": "./api/health_info.js",
+    "#api/sleep_logs": "./api/sleep_logs.js",
+    "#api/users": "./api/users.js",
+    "#api/water_logs": "./api/water_logs.js",
+    "#middleware/getUserFromToken": "./middleware/getUserFromToken.js",
+    "#middleware/requireBody": "./middleware/requireBody.js",
+    "#middleware/requireUser": "./middleware/requireUser.js",
+    "#db/queries/affirmations": "./db/queries/affirmations.js",
+    "#db/queries/encouragements": "./db/queries/encouragements.js",
+    "#db/queries/exercise_logs": "./db/queries/exercise_logs.js",
+    "#db/queries/food_logs": "./db/queries/food_logs.js",
+    "#db/queries/health_info": "./db/queries/health_info.js",
+    "#db/queries/sleep_logs": "./db/queries/sleep_logs.js",
+    "#db/queries/users": "./db/queries/users.js",
+    "#db/queries/water_logs": "./db/queries/water_logs.js",
+    "#utils/jwt": "./utils/jwt.js"
   }
 }

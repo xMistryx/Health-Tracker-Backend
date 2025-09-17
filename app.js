@@ -1,13 +1,28 @@
 import express from "express";
 import getUserFromToken from "#middleware/getUserFromToken";
 import usersRouter from "#api/users";
+import health_infoRouter from "#api/health_info";
+import water_logsRouter from "#api/water_logs";
+import sleep_logsRouter from "#api/sleep_logs";
+import exercise_logsRouter from "#api/exercise_logs";
+import food_logsRouter from "#api/food_logs";
+import affirmationsRouter from "#api/affirmations";
+import encouragementsRouter from "#api/encouragements";
+
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(getUserFromToken);
+// app.use(getUserFromToken);
 app.use("/users", usersRouter);
+app.use("/health_info", health_infoRouter);
+app.use("/water_logs", water_logsRouter);
+app.use("/sleep_logs", sleep_logsRouter);
+app.use("/exercise_logs", exercise_logsRouter);
+app.use("/food_logs", food_logsRouter);
+app.use("/affirmations", affirmationsRouter);
+app.use("/encouragements", encouragementsRouter);
 
 
 app.use((err, req, res, next) => {

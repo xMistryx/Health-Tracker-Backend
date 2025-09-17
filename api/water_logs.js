@@ -2,10 +2,12 @@ import express from "express";
 const router = express.Router();
 export default router;
 
-import { getWaterEntries, addWaterEntry } from "#db/queries/water.js";
-import { requireUser } from "#middleware/requireUser";
-import { requireBody } from "#middleware/requireBody";
+import { getWaterEntries, addWaterEntry, updateWaterEntry, deleteWaterEntry  } from "#db/queries/water_logs";
+import getUserFromToken from "#middleware/getUserFromToken";
+import requireUser from "#middleware/requireUser";
+import requireBody from "#middleware/requireBody";
 
+router.use(getUserFromToken);
 router.use(requireUser);
 
 router
@@ -65,11 +67,11 @@ router.get("/recommendation", async (req, res) => {
 });
 
 // PUT /water/:id
-router.put("/:id", requireBody(["amount_oz"]), async (req, res) => {
+router.put("/:id", requireBody(["date", "amount_oz"]), async (req, res) => {
     const { id } = req.params;
-    const { amount_oz } = req.body;
+    const { date, amount_oz } = req.body;
     try {
-        const updatedWaterEntry = await updateWaterEntry(id, { amount_oz });
+        const updatedWaterEntry = await updateWaterEntry(id, date, amount_oz);
         if (!updatedWaterEntry) {
             return res.status(404).json({ error: "Water entry not found" });
         }

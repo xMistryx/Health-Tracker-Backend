@@ -7,10 +7,12 @@ import {
     addFoodLog,
     updateFoodLog,
     deleteFoodLog
-} from "#db/queries/food";
-import { requireUser } from "#middleware/requireUser";
-import { requireBody } from "#middleware/requireBody";
+} from "#db/queries/food_logs";
+import getUserFromToken from "#middleware/getUserFromToken";
+import requireUser from "#middleware/requireUser";
+import requireBody from "#middleware/requireBody";
 
+router.use(getUserFromToken)
 router.use(requireUser);
 
 // GET /food
@@ -37,10 +39,10 @@ router.post("/", requireBody(["date", "food_item"]), async (req, res) => {
 });
 
 // PUT /food/:id
-router.put("/:id", requireBody(["food_item"]), async (req, res) => {
-    const { food_item, calories, protein, carbs, fiber, fat } = req.body;
+router.put("/:id", requireBody(["date", "food_item"]), async (req, res) => {
+    const { date, food_item, calories, protein, carbs, fiber, fat } = req.body;
     try {
-        const updatedLog = await updateFoodLog(req.params.id, { food_item, calories, protein, carbs, fiber, fat });
+        const updatedLog = await updateFoodLog(req.params.id, { date, food_item, calories, protein, carbs, fiber, fat });
         res.json(updatedLog);
     } catch (error) {
         console.error("Error updating food log:", error);

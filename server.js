@@ -1,11 +1,10 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+import app from "#app";
+import db from "#db/client";
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+const PORT = process.env.PORT ?? 3000;
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+await db.connect();
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}...`);
 });

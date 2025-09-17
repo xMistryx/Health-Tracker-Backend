@@ -17,13 +17,13 @@ export async function addWaterEntry(userId, date, amount_oz) {
     return water;
 }
 
-export async function updateWaterEntry(id, { amount_oz }) {
+export async function updateWaterEntry(id, date, amount_oz ) {
     const sql = `
     UPDATE water_logs
-    SET amount_oz = $2
+    SET date = $2, amount_oz = $3
     WHERE id = $1
     RETURNING *`;
-    const { rows: [water] } = await db.query(sql, [id, amount_oz]);
+    const { rows: [water] } = await db.query(sql, [id, date, amount_oz]);
     return water;
 }
 

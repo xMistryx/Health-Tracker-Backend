@@ -7,10 +7,12 @@ import {
     addSleepEntry, 
     updateSleepEntry, 
     deleteSleepEntry 
-} from "#db/queries/sleep";
-import { requireUser } from "#middleware/requireUser";
-import { requireBody } from "#middleware/requireBody";
+} from "#db/queries/sleep_logs";
+import getUserFromToken from "#middleware/getUserFromToken";
+import requireUser from "#middleware/requireUser";
+import requireBody from "#middleware/requireBody";
 
+router.use(getUserFromToken);
 router.use(requireUser);
 
 router
