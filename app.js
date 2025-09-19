@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import getUserFromToken from "#middleware/getUserFromToken";
 import usersRouter from "#api/users";
 import health_infoRouter from "#api/health_info";
@@ -9,9 +10,9 @@ import food_logsRouter from "#api/food_logs";
 import affirmationsRouter from "#api/affirmations";
 import encouragementsRouter from "#api/encouragements";
 
-
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(getUserFromToken);
@@ -23,7 +24,6 @@ app.use("/exercise_logs", exercise_logsRouter);
 app.use("/food_logs", food_logsRouter);
 app.use("/affirmations", affirmationsRouter);
 app.use("/encouragements", encouragementsRouter);
-
 
 app.use((err, req, res, next) => {
   switch (err.code) {
