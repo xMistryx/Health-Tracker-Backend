@@ -21,6 +21,7 @@ router.use(requireUser); // blocks if no valid user
 router.get("/", async (req, res) => {
   try {
     const entries = await getWaterEntries(req.user.id);
+    console.log(entries);
     res.json(entries);
   } catch (err) {
     console.error("Error fetching water entries:", err);

@@ -46,6 +46,7 @@ router.post("/", async (req, res) => {
     if (!height || !weight || !age || !biologicalSex || !gender) {
       return res.status(400).json({ error: "Missing required fields" });
     }
+    console.log("POST /health_info body:", req.body); // <-- Add this
 
     const healthInfo = await createHealthInfo(
       req.user.id,

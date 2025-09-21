@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import userRoutes from "./api/users.js";
 import exerciseLogsRouter from "./api/exercise_logs.js";
 import healthInfoRouter from "./api/health_info.js";
@@ -7,6 +8,13 @@ import healthTipsRouter from "./api/health_tips.js";
 import waterIntakeRouter from "./api/water.js";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // frontend URL
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 

@@ -67,19 +67,26 @@ router.post(
 );
 
 // Login
+// Login
 router.post("/login", requireBody(["email", "password"]), async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(password);
-    const user = await getUserByEmailAndPassword(email, password);
-    console.log(user);
-    if (!user)
-      return res
-        .status(401)
-        .json({ error: "Invalid email or password, Shiva!" });
 
+    const user = await getUserByEmailAndPassword(email, password);
+    if (!user)
+      return res.status(401).json({ error: "Invalid email or password" });
+
+    // Create JWT token
     const token = createToken({ id: user.id });
-    res.json({ message: "Login successful", token });
+
+    // Return token AND user info (without password)
+    const { id, first_name, last_name, username, email: userEmail } = user;
+
+    res.json({
+      message: "Login successful",
+      token,
+      user: { id, first_name, last_name, username, email: userEmail },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -92,6 +99,24 @@ router.get("/", async (req, res) => {
       "SELECT id, first_name, last_name, username, email FROM users"
     );
     res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// Get user by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.query(
+      "SELECT id, first_name, last_name, username, email FROM users WHERE id = $1",
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
