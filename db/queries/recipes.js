@@ -1,17 +1,12 @@
 import db from "../client.js";
 
 // Get all recipes (optionally filter by user)
-export async function getRecipes(userId = null) {
-  if (userId) {
-    const sql = `SELECT * FROM recipes WHERE user_id IS NULL OR user_id = $1 ORDER BY id`;
-    const { rows } = await db.query(sql, [userId]);
-    return rows;
-  } else {
-    const sql = `SELECT * FROM recipes WHERE user_id IS NULL ORDER BY id`;
+export async function getRecipes() {
+    const sql = `SELECT * FROM recipes ORDER BY id`;
     const { rows } = await db.query(sql);
     return rows;
   }
-}
+
 
 // Get a single recipe by id
 export async function getRecipeById(id) {
@@ -21,25 +16,25 @@ export async function getRecipeById(id) {
 }
 
 // Add a new user recipe
-export async function addRecipe(userId, { name, description, ingredients, instructions }) {
+export async function addRecipe(userId, { title, image_url, description, ingredients, instructions, created_by }) {
   const sql = `
-    INSERT INTO recipes (user_id, name, description, ingredients, instructions)
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO recipes (user_id, title, image_url, description, ingredients, instructions, created_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *
   `;
-  const { rows: [recipe] } = await db.query(sql, [userId, name, description, ingredients, instructions]);
+  const { rows: [recipe] } = await db.query(sql, [userId, title, image_url, description, JSON.stringify(ingredients), instructions, created_by]);
   return recipe;
 }
 
 // Update a user recipe
-export async function updateRecipe(id, userId, { name, description, ingredients, instructions }) {
+export async function updateRecipe(id, userId, { title, image_url, description, ingredients, instructions, created_by }) {
   const sql = `
     UPDATE recipes
-    SET name = $3, description = $4, ingredients = $5, instructions = $6
+    SET title = $3, image_url = $4, description = $5, ingredients = $6, instructions = $7, created_by = $8
     WHERE id = $1 AND user_id = $2
     RETURNING *
   `;
-  const { rows: [recipe] } = await db.query(sql, [id, userId, name, description, ingredients, instructions]);
+  const { rows: [recipe] } = await db.query(sql, [id, userId, title, image_url, description, JSON.stringify(ingredients), instructions, created_by]);
   return recipe;
 }
 

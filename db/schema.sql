@@ -91,7 +91,7 @@ CREATE TABLE recipes (
   ingredients JSONB NOT NULL,         -- store ingredients as JSON for flexibility
   instructions TEXT NOT NULL,
   created_by TEXT NOT NULL, 
-  creator_id INTEGER,       -- NULL for system recipes, user_id for user recipes
+  user_id INTEGER,       -- NULL for system recipes, user_id for user recipes
   created_at TIMESTAMP DEFAULT now(),
   updated_at TIMESTAMP DEFAULT now()
 );
