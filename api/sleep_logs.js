@@ -69,11 +69,11 @@ router.get("/recommendation", async (req, res) => {
 });
 
 // PUT /sleep/:id
-router.put("/:id", requireBody(["sleep_type", "start_time", "end_time", "duration"]), async (req, res) => {
+router.put("/:id", requireBody(["date", "sleep_type", "start_time", "end_time", "duration"]), async (req, res) => {
     const { id } = req.params;
-    const { sleep_type, start_time, end_time, duration } = req.body;
+    const { date, sleep_type, start_time, end_time, duration } = req.body;
     try {
-        const updatedSleepEntry = await updateSleepEntry(id, { sleep_type, start_time, end_time, duration });
+        const updatedSleepEntry = await updateSleepEntry(id, { date, sleep_type, start_time, end_time, duration });
         if (!updatedSleepEntry) {
             return res.status(404).json({ message: "Sleep entry not found." });
         }
