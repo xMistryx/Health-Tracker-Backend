@@ -10,6 +10,7 @@ import food_logsRouter from "#api/food_logs";
 import affirmationsRouter from "#api/affirmations";
 import encouragementsRouter from "#api/encouragements";
 import health_tipsRouter from "#api/health_tips";
+import recipesRouter from "#api/recipes";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/food_logs", food_logsRouter);
 app.use("/health_tips", health_tipsRouter);
 app.use("/affirmations", affirmationsRouter);
 app.use("/encouragements", encouragementsRouter);
+app.use("/recipes", recipesRouter);
 
 app.use((err, req, res, next) => {
   switch (err.code) {
