@@ -15,15 +15,15 @@ router.get("/", requireUser, async (req, res) => {
   }
 });
 
-// Allow public read (no requireUser)
+// Get a single recipe by id
 router.get("/:id", async (req, res) => {
- try {
-  const recipe = await getRecipeById(req.params.id);
-  if (!recipe) return res.status(404).json({ error: "Recipe not found" });
-  return res.json(recipe);
- } catch (err) {
-  return res.status(500).json({ error: err.message });
- }
+  try {
+    const recipe = await getRecipeById(req.params.id);
+    if (!recipe) return res.status(404).json({ error: "Recipe not found" });
+    return res.json(recipe);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Add a new recipe (user only)
