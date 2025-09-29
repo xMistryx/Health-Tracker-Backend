@@ -16,15 +16,13 @@ router.get("/", requireUser, async (req, res) => {
 });
 
 // Get a single recipe by id
-router.get("/:id", requireUser, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const recipe = await getRecipeById(req.params.id);
-    if (!recipe || (recipe.user_id && recipe.user_id !== req.user.id)) {
-      return res.status(404).json({ error: "Recipe not found" });
-    }
-    res.json(recipe);
+    if (!recipe) return res.status(404).json({ error: "Recipe not found" });
+    return res.json(recipe);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
