@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS food_logs;
 DROP TABLE IF EXISTS sleep_logs;
 DROP TABLE IF EXISTS water_logs;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS recipes;
 
 CREATE TABLE users(
     id serial PRIMARY KEY,
@@ -81,3 +82,16 @@ CREATE TABLE encouragements(
     milestone text NOT NULL,
     message text NOT NULL
 );  
+
+CREATE TABLE recipes (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(250) NOT NULL,
+  image_url TEXT,
+  description TEXT,
+  ingredients JSONB NOT NULL,         -- store ingredients as JSON for flexibility
+  instructions TEXT NOT NULL,
+  created_by TEXT NOT NULL, 
+  user_id INTEGER,       -- NULL for system recipes, user_id for user recipes
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP DEFAULT now()
+);
