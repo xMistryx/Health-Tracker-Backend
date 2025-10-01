@@ -26,7 +26,7 @@ export async function getHealthInfoByUserId(userId) {
   const sql = `
     SELECT *
     FROM health_info
-    WHERE user_id = $1;
+    WHERE id = $1;
   `;
   const { rows } = await db.query(sql, [userId]);
   return rows;

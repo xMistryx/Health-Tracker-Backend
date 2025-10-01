@@ -41,6 +41,7 @@
     "#api/sleep_logs": "./api/sleep_logs.js",
     "#api/users": "./api/users.js",
     "#api/water_logs": "./api/water_logs.js",
+    "#api/recipes": "./api/recipes.js",
     "#middleware/getUserFromToken": "./middleware/getUserFromToken.js",
     "#middleware/requireBody": "./middleware/requireBody.js",
     "#middleware/requireUser": "./middleware/requireUser.js",

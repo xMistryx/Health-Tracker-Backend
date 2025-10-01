@@ -10,14 +10,13 @@ import food_logsRouter from "#api/food_logs";
 import affirmationsRouter from "#api/affirmations";
 import encouragementsRouter from "#api/encouragements";
 import health_tipsRouter from "#api/health_tips";
-
+import recipesRouter from "./api/recipes.js";
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(getUserFromToken);
 app.use("/users", usersRouter);
+app.use(getUserFromToken);
 app.use("/health_info", health_infoRouter);
 app.use("/water_logs", water_logsRouter);
 app.use("/sleep_logs", sleep_logsRouter);
@@ -26,7 +25,7 @@ app.use("/food_logs", food_logsRouter);
 app.use("/health_tips", health_tipsRouter);
 app.use("/affirmations", affirmationsRouter);
 app.use("/encouragements", encouragementsRouter);
-
+app.use("/recipes", recipesRouter);
 app.use((err, req, res, next) => {
   switch (err.code) {
     case "22P02":
@@ -38,10 +37,8 @@ app.use((err, req, res, next) => {
       next(err);
   }
 });
-
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send("Something went wrong.");
 });
-
 export default app;
