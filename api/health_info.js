@@ -36,6 +36,7 @@ router.post("/", async (req, res) => {
 
     const healthInfo = await createHealthInfo(
       req.user.id,
+      req.user.username,
       height,
       weight,
       age,

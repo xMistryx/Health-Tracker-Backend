@@ -4,6 +4,7 @@ import db from "../client.js";
 // Create a new health info record
 export async function createHealthInfo(
   userId,
+  username,
   height,
   weight,
   age,
@@ -11,13 +12,13 @@ export async function createHealthInfo(
   gender
 ) {
   const sql = `
-    INSERT INTO health_info (user_id, height, weight, age, biological_sex, gender)
-    VALUES ($1, $2, $3, $4, $5, $6)
+    INSERT INTO health_info (user_id, username, height, weight, age, biological_sex, gender)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *;
   `;
   const {
     rows: [healthInfo],
-  } = await db.query(sql, [userId, height, weight, age, biologicalSex, gender]);
+  } = await db.query(sql, [userId, username, height, weight, age, biologicalSex, gender]);
   return healthInfo;
 }
 

@@ -1,4 +1,4 @@
-INSERT INTO recipes (title, image_url, description, ingredients, instructions, created_by, user_id)
+INSERT INTO recipes (title, image_url, description, ingredients, instructions, username, user_id)
 VALUES
 -- Recipe 1
 ('LIGHT MANGO CHEESECAKE',

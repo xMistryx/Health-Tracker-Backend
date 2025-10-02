@@ -27,9 +27,10 @@ router.get("/:id", async (req, res) => {
 });
 
 // Add a new recipe (user only)
-router.post("/", requireUser, requireBody(["title", "description", "ingredients", "instructions", "created_by"]), async (req, res) => {
+router.post("/", requireUser, requireBody(["title", "description", "ingredients", "instructions"]), async (req, res) => {
   try {
-    const recipe = await addRecipe(req.user.id, req.body);
+    const recipeData = { ...req.body, username: req.user.username };
+    const recipe = await addRecipe(req.user.id, recipeData);
     res.status(201).json(recipe);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -37,7 +38,7 @@ router.post("/", requireUser, requireBody(["title", "description", "ingredients"
 });
 
 // Update a user recipe
-router.put("/:id", requireUser, requireBody(["title", "description", "ingredients", "instructions", "created_by"]), async (req, res) => {
+router.put("/:id", requireUser, requireBody(["title", "description", "ingredients", "instructions"]), async (req, res) => {
   try {
     const recipe = await updateRecipe(req.params.id, req.user.id, req.body);
     if (!recipe) return res.status(404).json({ error: "Recipe not found or not yours" });

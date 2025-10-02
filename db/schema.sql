@@ -58,6 +58,7 @@ CREATE TABLE exercise_logs(
 CREATE TABLE health_info(
     id serial PRIMARY KEY,
     user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    username text NOT NULL REFERENCES users(username) ON DELETE CASCADE,
     height integer NOT NULL,
     weight integer NOT NULL,
     age integer NOT NULL,
@@ -88,10 +89,10 @@ CREATE TABLE recipes (
   title VARCHAR(250) NOT NULL,
   image_url TEXT,
   description TEXT,
-  ingredients JSONB NOT NULL,         -- store ingredients as JSON for flexibility
+  ingredients JSONB NOT NULL,         
   instructions TEXT NOT NULL,
-  created_by TEXT NOT NULL, 
-  user_id INTEGER,       -- NULL for system recipes, user_id for user recipes
+  username text NOT NULL REFERENCES users(username) ON DELETE CASCADE,
+  user_id INTEGER,
   created_at TIMESTAMP DEFAULT now(),
   updated_at TIMESTAMP DEFAULT now()
 );

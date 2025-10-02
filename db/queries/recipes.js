@@ -16,18 +16,18 @@ export async function getRecipeById(id) {
 }
 
 // Add a new user recipe
-export async function addRecipe(userId, { title, image_url, description, ingredients, instructions, created_by }) {
+export async function addRecipe(userId, { title, image_url, description, ingredients, instructions, username }) {
   const sql = `
-    INSERT INTO recipes (user_id, title, image_url, description, ingredients, instructions, created_by)
+    INSERT INTO recipes (user_id, title, image_url, description, ingredients, instructions, username)
     VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *
   `;
-  const { rows: [recipe] } = await db.query(sql, [userId, title, image_url, description, JSON.stringify(ingredients), instructions, created_by]);
+  const { rows: [recipe] } = await db.query(sql, [userId, title, image_url, description, JSON.stringify(ingredients), instructions, username]);
   return recipe;
 }
 
 // Update a user recipe
-export async function updateRecipe(id, userId, { title, image_url, description, ingredients, instructions, created_by }) {
+export async function updateRecipe(id, userId, { title, image_url, description, ingredients, instructions }) {
   const sql = `
     UPDATE recipes
 SET title = $3,
@@ -35,12 +35,11 @@ SET title = $3,
     description = $5,
     ingredients = $6,
     instructions = $7,
-    created_by = $8,
     updated_at = NOW()
 WHERE id = $1 AND user_id = $2
 RETURNING *
   `;
-  const { rows: [recipe] } = await db.query(sql, [id, userId, title, image_url, description, JSON.stringify(ingredients), instructions, created_by]);
+  const { rows: [recipe] } = await db.query(sql, [id, userId, title, image_url, description, JSON.stringify(ingredients), instructions]);
   return recipe;
 }
 
