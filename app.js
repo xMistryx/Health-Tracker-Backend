@@ -8,7 +8,6 @@ import sleep_logsRouter from "#api/sleep_logs";
 import exercise_logsRouter from "#api/exercise_logs";
 import food_logsRouter from "#api/food_logs";
 import affirmationsRouter from "#api/affirmations";
-import encouragementsRouter from "#api/encouragements";
 import health_tipsRouter from "#api/health_tips";
 import recipesRouter from "#api/recipes";
 
@@ -26,7 +25,6 @@ app.use("/exercise_logs", exercise_logsRouter);
 app.use("/food_logs", food_logsRouter);
 app.use("/health_tips", health_tipsRouter);
 app.use("/affirmations", affirmationsRouter);
-app.use("/encouragements", encouragementsRouter);
 app.use("/recipes", recipesRouter);
 
 app.use((err, req, res, next) => {
