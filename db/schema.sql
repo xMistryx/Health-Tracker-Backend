@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS encouragements;
+DROP TABLE IF EXISTS recipes;
 DROP TABLE IF EXISTS affirmations;
 DROP TABLE IF EXISTS health_tips;
 DROP TABLE IF EXISTS health_info;
@@ -7,7 +7,6 @@ DROP TABLE IF EXISTS food_logs;
 DROP TABLE IF EXISTS sleep_logs;
 DROP TABLE IF EXISTS water_logs;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS recipes;
 
 CREATE TABLE users(
     id serial PRIMARY KEY,
@@ -76,13 +75,6 @@ CREATE TABLE affirmations(
     id serial PRIMARY KEY,
     message text NOT NULL
 );
-
-CREATE TABLE encouragements(
-    id serial PRIMARY KEY,
-    category text NOT NULL CHECK (category IN ('Water','Exercise','Food','Sleep')),
-    milestone text NOT NULL,
-    message text NOT NULL
-);  
 
 CREATE TABLE recipes (
   id SERIAL PRIMARY KEY,
