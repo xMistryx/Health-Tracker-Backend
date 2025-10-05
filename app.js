@@ -13,7 +13,12 @@ import recipesRouter from "#api/recipes";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://xtendx.netlify.app'
+  ]
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/users", usersRouter);
