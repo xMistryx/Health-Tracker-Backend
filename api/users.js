@@ -6,35 +6,6 @@ import requireBody from "../middleware/requireBody.js";
 
 const router = express.Router();
 
-// ----- Helper functions -----
-async function getUserByEmail(email) {
-  const result = await db.query("SELECT * FROM users WHERE email = $1", [
-    email,
-  ]);
-  console.log(result.rows[0]);
-  return result.rows[0];
-}
-
-async function getUserByEmailAndPassword(email, password) {
-  const user = await getUserByEmail(email);
-  if (!user) return null;
-
-  const isValid = await bcrypt.compare(password, user.password); // <-- FIXED
-  if (!isValid) return null;
-
-  return user;
-}
-
-async function createUser(first_name, last_name, username, email, password) {
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const result = await db.query(
-    `INSERT INTO users (first_name, last_name, username, email, password)
-     VALUES ($1, $2, $3, $4, $5)
-     RETURNING *`,
-    [first_name, last_name, username, email, hashedPassword]
-  );
-  return result.rows[0];
-}
 
 // ----- Routes -----
 
