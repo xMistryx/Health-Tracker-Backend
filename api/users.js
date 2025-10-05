@@ -3,6 +3,7 @@ import db from "../db/client.js";
 import bcrypt from "bcryptjs";
 import { createToken } from "../utils/jwt.js";
 import requireBody from "../middleware/requireBody.js";
+import { createUser, getUserByEmail, getUserByEmailAndPassword } from "../db/queries/users.js";
 
 const router = express.Router();
 
