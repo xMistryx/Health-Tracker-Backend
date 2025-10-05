@@ -21,8 +21,15 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  // Only apply getUserFromToken to protected routes, not /users/register or /users/login
+  if (req.path === '/users/register' || req.path === '/users/login') {
+    return next();
+  }
+  getUserFromToken(req, res, next);
+});
+
 app.use("/users", usersRouter);
-app.use(getUserFromToken);
 app.use("/health_info", health_infoRouter);
 app.use("/water_logs", water_logsRouter);
 app.use("/sleep_logs", sleep_logsRouter);
