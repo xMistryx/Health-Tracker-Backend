@@ -22,6 +22,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/users", usersRouter);
+app.use("/recipes", recipesRouter);
+app.use(getUserFromToken);
 app.use("/health_info", health_infoRouter);
 app.use("/water_logs", water_logsRouter);
 app.use("/sleep_logs", sleep_logsRouter);
@@ -29,7 +31,6 @@ app.use("/exercise_logs", exercise_logsRouter);
 app.use("/food_logs", food_logsRouter);
 app.use("/health_tips", health_tipsRouter);
 app.use("/affirmations", affirmationsRouter);
-app.use("/recipes", recipesRouter);
 
 app.use((err, req, res, next) => {
   switch (err.code) {
